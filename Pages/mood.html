@@ -1,0 +1,530 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guess My Mood? 💗</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    min-height: 100dvh;
+    background-color: #10051F;
+    background-image: radial-gradient(
+        circle at 50% 45%,
+        rgba(236,72,153,0.42) 0%,
+        rgba(190,24,170,0.22) 17%,
+        rgba(126,34,206,0.12) 35%,
+        transparent 62%
+    );
+    font-family: "Poppins", sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+}
+
+.container {
+    width: 100%;
+    max-width: 600px;
+    background: rgba(30,41,59,0.85);
+    border: 1px solid rgba(236,72,153,0.3);
+    border-radius: 22px;
+    padding: 32px;
+    color: white;
+    box-shadow: 0 0 35px rgba(236,72,153,0.15);
+    backdrop-filter: blur(12px);
+    text-align: center;
+}
+
+.header {
+    margin-bottom: 28px;
+}
+
+.header h1 {
+    color: #F9A8D4;
+    font-size: 29px;
+    margin-bottom: 8px;
+}
+
+.header p {
+    color: #D8B4FE;
+    font-size: 12px;
+    letter-spacing: 2px;
+}
+
+.emoji {
+    font-size: 65px;
+    margin-bottom: 15px;
+    animation: float 2s infinite ease-in-out;
+}
+
+@keyframes float {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+.progress-info {
+    display: flex;
+    justify-content: space-between;
+    color: #F9A8D4;
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 7px;
+    background: #382044;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 30px;
+}
+
+.progress {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg,#EC4899,#A855F7);
+    transition: width 0.4s ease;
+}
+
+.question-number {
+    color: #F9A8D4;
+    font-size: 13px;
+    margin-bottom: 12px;
+}
+
+.question {
+    font-size: 23px;
+    line-height: 1.5;
+    margin-bottom: 25px;
+}
+
+.answers {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.answer {
+    width: 100%;
+    padding: 15px;
+    background: #293449;
+    border: 1px solid #4B3A59;
+    border-radius: 12px;
+    color: white;
+    font-size: 15px;
+    text-align: left;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+.answer:hover {
+    background: #49304F;
+    border-color: #EC4899;
+    transform: translateY(-2px);
+}
+
+.answer.selected {
+    background: #71365F;
+    border-color: #F9A8D4;
+}
+
+.answer:disabled {
+    cursor: default;
+}
+
+.feedback {
+    display: none;
+    margin-top: 20px;
+    padding: 17px;
+    background: rgba(236,72,153,0.12);
+    border: 1px solid rgba(236,72,153,0.2);
+    border-radius: 12px;
+    color: #FBCFE8;
+    font-size: 14px;
+    line-height: 1.8;
+    animation: appear 0.4s ease;
+}
+
+@keyframes appear {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.next-btn {
+    display: none;
+    width: 100%;
+    padding: 14px;
+    margin-top: 20px;
+    background: linear-gradient(135deg,#EC4899,#9333EA);
+    border: none;
+    border-radius: 30px;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.next-btn:hover {
+    transform: scale(1.03);
+    box-shadow: 0 5px 20px rgba(236,72,153,0.35);
+}
+
+.result {
+    display: none;
+    text-align: center;
+    animation: appear 0.5s ease;
+}
+
+.result h1 {
+    color: #F9A8D4;
+    font-size: 29px;
+    margin-bottom: 18px;
+}
+
+.result p {
+    color: #F3E8FF;
+    line-height: 1.9;
+    margin-bottom: 20px;
+    font-size: 15px;
+}
+
+.result .emoji {
+    font-size: 65px;
+}
+
+@media(max-width:480px) {
+    .container {
+        padding: 24px 18px;
+    }
+
+    .header h1 {
+        font-size: 25px;
+    }
+
+    .question {
+        font-size: 20px;
+    }
+
+    .answer {
+        font-size: 14px;
+        padding: 13px;
+    }
+
+    .result h1 {
+        font-size: 25px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <h1>Guess My Mood? 🥺</h1>
+        <p>LET'S SEE HOW WELL YOU UNDERSTAND ME 💗</p>
+    </div>
+
+    <div id="game">
+
+        <div class="emoji" id="mainEmoji">🥺</div>
+
+        <div class="progress-info">
+            <span id="questionCount">QUESTION 1 OF 5</span>
+            <span id="percentage">0% COMPLETED</span>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+
+        <div class="question-number" id="number">
+            QUESTION 01
+        </div>
+
+        <h2 class="question" id="question">
+            Can you guess my mood right now? 👀
+        </h2>
+
+        <div class="answers" id="answers"></div>
+
+        <div class="feedback" id="feedback"></div>
+
+        <button class="next-btn" id="nextBtn"
+            onclick="nextQuestion()">
+            Next Question →
+        </button>
+
+    </div>
+
+    <!-- FINAL RESULT -->
+
+    <div class="result" id="result">
+
+        <div class="emoji">🥺💗😭</div>
+
+        <h1>YOU FAILED! 😭</h1>
+
+        <p id="finalMessage"></p>
+
+        <p>
+            It's not even about guessing my mood anymore.
+            I just want you to tell me what happened.
+            Tumne abhi tak bataya hi nahi. 🥺
+        </p>
+
+        <p style="color:#F9A8D4;font-weight:bold;">
+            Ab bata bhi do naaa! 😭❤️
+        </p>
+
+         <button class="next-btn" style="display:block"
+            onclick="location.href='/Pages/FinalWish.html'">
+            Next page
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+
+const questions = [
+
+{
+    question: "First of all, guess my mood right now? 🥺",
+
+    emoji: "🥺",
+
+    answers: [
+        "You're happy! 😊",
+        "You're angry! 😡",
+        "You're sad! 🥺",
+        "You're ignoring me! 😭"
+    ],
+
+    feedback: [
+        "WRONGGG! Tumne abhi tak nahi btaya wo baat kya thi. Baat nahi krna ab. 😭",
+        "Jab pata he to btate kyu nahi ho kya baat thi? 😭",
+        "Haan to batao na kya hua tha. Aise chup rehne se kya hoga? 🥺",
+        "Achaaa, ab tum mujhe ignore bhi karoge? Wahhh. 😭"
+    ]
+},
+
+{
+    question: "What do you think I'm thinking about? 👀",
+
+    emoji: "🤔",
+
+    answers: [
+        "Something I said",
+        "Something that happened",
+        "Me, obviously 😌",
+        "Nothing, just overthinking"
+    ],
+
+    feedback: [
+        "TO PHIR BATA DO NA KYA BAAT THI. 😭",
+        "Exactlyyy! Aur abhi tak bataya bhi nahi. 🥺",
+        "Haan haan, khushfehmi achi baat hai. 😂",
+        "Overthinking nahi karungi agar tum bata doge. 😭"
+    ]
+},
+
+{
+    question: "If I suddenly stop talking, what does that mean? 🥲",
+
+    emoji: "😶",
+
+    answers: [
+        "You're upset with me",
+        "You need some attention",
+        "You're waiting for me to ask",
+        "You don't want to talk"
+    ],
+
+    feedback: [
+        "Maybeee. Lekin pehle wo baat to batao. 😭",
+        "Obviously attention chahiye, lekin tum baat bhi to nahi batate. 💗",
+        "FINALLY! Someone understands. Ab pooch bhi lo kya hua. 🥺",
+        "Aisa bhi nahi hai. Bas tum samajh hi nahi rahe. 😭"
+    ]
+},
+
+{
+    question: "Okay, what should you do to fix my mood? 💗",
+
+    emoji: "🥹",
+
+    answers: [
+        "Tell me what happened",
+        "Ask me what's wrong",
+        "Give me a hug",
+        "Just say sorry"
+    ],
+
+    feedback: [
+        "YESSS! ITNA TIME LAGA YE SAMAJHNE MEIN? 😭❤️",
+        "Finally! Bas yehi to sunna tha. 🥺",
+        "Hug bhi chahiye, lekin pehle baat batao. 😭",
+        "SORRY KIS BAAT KA? PEHLE BATAO KYA HUA. 😂"
+    ]
+},
+
+{
+    question: "Last chance! What do I actually want? 🥺",
+
+    emoji: "💗",
+
+    answers: [
+        "I want to talk about what happened",
+        "I want you to understand me",
+        "I want an apology",
+        "I want you to stop asking questions"
+    ],
+
+    feedback: [
+        "YESSS! AB TO BATA DO NA PLEASEEE. 😭❤️",
+        "Then understand this: mujhe wo baat jaan'ni hai. 🥺",
+        "Sorry baad mein, pehle batao kya hua tha. 😭",
+        "HAHAHA nice try. Itni asani se nahi bach sakte. 💀"
+    ]
+}
+
+];
+
+let currentQuestion = 0;
+let selectedAnswer = null;
+
+const questionEl = document.getElementById("question");
+const answersEl = document.getElementById("answers");
+const feedbackEl = document.getElementById("feedback");
+const nextBtn = document.getElementById("nextBtn");
+
+function loadQuestion() {
+
+    selectedAnswer = null;
+
+    const q = questions[currentQuestion];
+
+    document.getElementById("mainEmoji").textContent = q.emoji;
+
+    document.getElementById("number").textContent =
+        `QUESTION ${String(currentQuestion + 1).padStart(2, "0")}`;
+
+    document.getElementById("questionCount").textContent =
+        `QUESTION ${currentQuestion + 1} OF ${questions.length}`;
+
+    const percent = Math.round(
+        (currentQuestion / questions.length) * 100
+    );
+
+    document.getElementById("percentage").textContent =
+        `${percent}% COMPLETED`;
+
+    document.getElementById("progress").style.width =
+        percent + "%";
+
+    questionEl.textContent = q.question;
+
+    answersEl.innerHTML = "";
+
+    feedbackEl.style.display = "none";
+
+    nextBtn.style.display = "none";
+
+    q.answers.forEach((answer, index) => {
+
+        const button = document.createElement("button");
+
+        button.className = "answer";
+        button.textContent = answer;
+
+        button.onclick = () => selectAnswer(index, button);
+
+        answersEl.appendChild(button);
+
+    });
+
+}
+
+function selectAnswer(index, button) {
+
+    if (selectedAnswer !== null) return;
+
+    selectedAnswer = index;
+
+    const q = questions[currentQuestion];
+
+    document.querySelectorAll(".answer").forEach(btn => {
+        btn.disabled = true;
+        btn.style.opacity = "0.55";
+    });
+
+    button.classList.add("selected");
+    button.style.opacity = "1";
+
+    feedbackEl.textContent = q.feedback[index];
+
+    feedbackEl.style.display = "block";
+
+    nextBtn.style.display = "block";
+
+    nextBtn.textContent =
+        currentQuestion === questions.length - 1
+        ? "See Final Result ❤️"
+        : "Next Question →";
+
+}
+
+function nextQuestion() {
+
+    currentQuestion++;
+
+    if (currentQuestion < questions.length) {
+        loadQuestion();
+    } else {
+        showResult();
+    }
+
+}
+
+function showResult() {
+
+    document.getElementById("game").style.display = "none";
+
+    document.getElementById("result").style.display = "block";
+
+    document.getElementById("finalMessage").textContent =
+        "Congratulations! You completed all 5 questions and STILL haven't figured out that I just want to know what happened. 😭 I hope you finally understand the assignment. 😂❤️";
+
+}
+
+function restartGame() {
+
+    currentQuestion = 0;
+
+    document.getElementById("result").style.display = "none";
+
+    document.getElementById("game").style.display = "block";
+
+    loadQuestion();
+
+}
+
+loadQuestion();
+
+</script>
+
+</body>
+</html>

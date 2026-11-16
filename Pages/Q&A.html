@@ -1,0 +1,600 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>A Little Birthday Test 💗</title>
+
+<style>
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    background-color: #10051F;
+
+    background-image: radial-gradient(
+        circle at 50% 45%,
+        rgba(236,72,153,0.42) 0%,
+        rgba(190,24,170,0.22) 17%,
+        rgba(126,34,206,0.12) 35%,
+        transparent 62%
+    );
+
+    font-family: "Poppins", sans-serif;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+}
+
+/* MAIN CARD */
+
+.quiz-container {
+    width: 100%;
+    max-width: 650px;
+
+    background: rgba(30,41,59,0.85);
+
+    border: 1px solid rgba(236,72,153,0.25);
+
+    border-radius: 20px;
+
+    padding: 35px;
+
+    color: white;
+
+    box-shadow: 0 0 35px rgba(236,72,153,0.12);
+
+    backdrop-filter: blur(12px);
+}
+
+/* HEADER */
+
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.header h1 {
+    color: #F9A8D4;
+    font-size: 30px;
+    margin-bottom: 8px;
+}
+
+.header p {
+    color: #D8B4FE;
+    font-size: 13px;
+    letter-spacing: 2px;
+}
+
+/* PROGRESS */
+
+.progress-info {
+    display: flex;
+    justify-content: space-between;
+    color: #F9A8D4;
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 7px;
+    background: #382044;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 30px;
+}
+
+.progress {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg,#EC4899,#A855F7);
+    transition: width 0.4s ease;
+}
+
+/* QUESTION */
+
+.question-number {
+    color: #F9A8D4;
+    font-size: 13px;
+    margin-bottom: 12px;
+}
+
+.question {
+    font-size: 23px;
+    line-height: 1.5;
+    margin-bottom: 25px;
+}
+
+/* ANSWERS */
+
+.answers {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.answer {
+    width: 100%;
+    padding: 15px;
+
+    background: #293449;
+
+    border: 1px solid #4B3A59;
+
+    border-radius: 12px;
+
+    color: white;
+
+    font-size: 15px;
+    text-align: left;
+
+    cursor: pointer;
+
+    transition: 0.25s ease;
+}
+
+.answer:hover {
+    background: #49304F;
+    border-color: #EC4899;
+    transform: translateY(-2px);
+}
+
+.answer.selected {
+    background: #71365F;
+    border-color: #F9A8D4;
+}
+
+/* FEEDBACK */
+
+.feedback {
+    display: none;
+
+    margin-top: 20px;
+
+    padding: 15px;
+
+    background: rgba(236,72,153,0.12);
+
+    border-radius: 12px;
+
+    color: #FBCFE8;
+
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* NEXT BUTTON */
+
+.next-btn {
+    display: none;
+
+    width: 100%;
+
+    padding: 14px;
+
+    margin-top: 20px;
+
+    background: linear-gradient(135deg,#EC4899,#9333EA);
+
+    border: none;
+    border-radius: 30px;
+
+    color: white;
+
+    font-size: 15px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+.next-btn:hover {
+    transform: scale(1.03);
+    box-shadow: 0 5px 20px rgba(236,72,153,0.35);
+}
+
+/* RESULT */
+
+.result {
+    display: none;
+    text-align: center;
+}
+
+.result h1 {
+    color: #F9A8D4;
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+.result p {
+    color: #F3E8FF;
+    line-height: 1.8;
+    margin-bottom: 20px;
+}
+
+.result .emoji {
+    font-size: 65px;
+    margin-bottom: 15px;
+}
+
+/* MOBILE */
+
+@media(max-width: 480px) {
+
+    body {
+        padding: 12px;
+    }
+
+    .quiz-container {
+        padding: 22px 17px;
+        border-radius: 16px;
+    }
+
+    .header h1 {
+        font-size: 25px;
+    }
+
+    .question {
+        font-size: 19px;
+    }
+
+    .answer {
+        font-size: 14px;
+        padding: 13px;
+    }
+
+    .result h1 {
+        font-size: 25px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="quiz-container">
+
+    <div class="header">
+        <h1>A Little Test! 💗</h1>
+        <p>LET'S SEE HOW WELL YOU KNOW YOURSELF</p>
+    </div>
+
+    <div id="quiz">
+
+        <div class="progress-info">
+            <span id="questionCount">QUESTION 1 OF 8</span>
+            <span id="percentage">0% COMPLETED</span>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+
+        <div class="question-number" id="number">
+            QUESTION 01
+        </div>
+
+        <h2 class="question" id="question"></h2>
+
+        <div class="answers" id="answers"></div>
+
+        <div class="feedback" id="feedback"></div>
+
+        <button class="next-btn" id="nextBtn" onclick="nextQuestion()">
+            Next Question →
+        </button>
+
+    </div>
+
+
+    <!-- FINAL RESULT -->
+
+    <div class="result" id="result">
+
+        <div class="emoji">🎂😭💗</div>
+
+        <h1>TEST COMPLETED!</h1>
+
+        <p id="finalMessage"></p>
+
+        <p>
+            Anyway, no matter what your answers were,
+            you're still the same weird little human
+            I was talking about. 😂❤️
+        </p>
+
+        <h2 style="color:#F9A8D4;">
+            Happy Birthday Once Again! 🎉
+        </h2>
+
+        <button class="next-btn" style="display:block"
+            onclick="location.href='/Pages/mood.html'">
+            Next page
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const questions = [
+
+{
+    question: "First of all, are you actually human? 😭",
+
+    answers: [
+        "Yes, obviously 😭",
+        "I'm an advanced AI model 🤖",
+        "Still waiting for my software update 💀",
+        "That's classified information 👀"
+    ],
+
+    feedback: [
+        "Hmm. Suspicious. Your facial expressions say otherwise. 😂",
+        "I KNEW IT. Finally, an honest answer.",
+        "Your developers really need to hurry up. 😭",
+        "Even your identity is running on airplane mode."
+    ]
+},
+
+{
+    question: "How many facial expressions do you have? 💀",
+
+    answers: [
+        "A lot actually!",
+        "Two. Happy and loading...",
+        "One permanent expression 😐",
+        "Depends on the Wi-Fi connection."
+    ],
+
+    feedback: [
+        "HAHAHA. Name three. I'll wait. 😭",
+        "That's already an impressive upgrade.",
+        "I knew it. The default settings never changed.",
+        "Please restart your face. 😂"
+    ]
+},
+
+{
+    question: "What happens when someone tells you a funny joke? 😂",
+
+    answers: [
+        "I laugh normally.",
+        "I smile for 0.5 seconds.",
+        "I just stare at them 😐",
+        "I process whether it's funny first."
+    ],
+
+    feedback: [
+        "Sure, buddy. We totally believe you.",
+        "A RARE HISTORICAL EVENT!",
+        "The legendary emotionless stare strikes again.",
+        "Your humour processing speed needs improvement. 😭"
+    ]
+},
+
+{
+    question: "Who is your favourite personality? 👀",
+
+    answers: [
+        "Obviously you.",
+        "Myself, because I'm amazing.",
+        "I refuse to answer.",
+        "Can I change my answer later?"
+    ],
+
+    feedback: [
+        "CORRECT ANSWER. Excellent taste. 😌❤️",
+        "A little competition never hurt anyone. 😂",
+        "Your silence is very suspicious.",
+        "NO TAKE-BACKS. It's permanently recorded. 😭"
+    ]
+},
+
+{
+    question: "If your life had a software update, what would you fix first? 🤖",
+
+    answers: [
+        "Facial expressions",
+        "Hand movements while talking",
+        "My suspiciously robotic personality",
+        "Nothing. I'm perfect."
+    ],
+
+    feedback: [
+        "PLEASE INSTALL THIS UPDATE IMMEDIATELY.",
+        "Finally, someone acknowledged the problem.",
+        "At least you're self-aware. 😭",
+        "HAHAHAHA. The confidence is unbelievable."
+    ]
+},
+
+{
+    question: "What's your most dangerous superpower? 😭",
+
+    answers: [
+        "Making people laugh",
+        "Being effortlessly emotionless",
+        "Disappearing when responsibilities arrive",
+        "Having absolutely no idea what's happening."
+    ],
+
+    feedback: [
+        "Okay, that's actually a good one.",
+        "Your face has already mastered this skill.",
+        "A professional at avoiding side quests. 💀",
+        "The most honest answer so far."
+    ]
+},
+
+{
+    question: "How would you describe your birthday personality? 🎂",
+
+    answers: [
+        "Cute and innocent.",
+        "A walking disaster.",
+        "An underdeveloped AI model.",
+        "A limited edition human."
+    ],
+
+    feedback: [
+        "Innocent? That's debatable. 😂",
+        "At least you know yourself.",
+        "THE ACCURACY IS INSANE. 😭",
+        "Limited edition, questionable software."
+    ]
+},
+
+{
+    question: "One last question... Did you enjoy this little test? ❤️",
+
+    answers: [
+        "Yes, it was amazing!",
+        "It was okay, I guess.",
+        "I want a refund. 😭",
+        "I only came for the birthday wishes."
+    ],
+
+    feedback: [
+        "YAYYY! Mission accomplished. ❤️",
+        "I'll accept that. Barely. 😂",
+        "NO REFUNDS. Birthday policy. 💀",
+        "HAHAHA. At least you're honest."
+    ]
+}
+
+];
+
+let currentQuestion = 0;
+let selectedAnswer = null;
+
+const questionEl = document.getElementById("question");
+const answersEl = document.getElementById("answers");
+const feedbackEl = document.getElementById("feedback");
+const nextBtn = document.getElementById("nextBtn");
+
+function loadQuestion() {
+
+    selectedAnswer = null;
+
+    const q = questions[currentQuestion];
+
+    document.getElementById("number").textContent =
+        `QUESTION ${String(currentQuestion + 1).padStart(2, "0")}`;
+
+    document.getElementById("questionCount").textContent =
+        `QUESTION ${currentQuestion + 1} OF ${questions.length}`;
+
+    const percent = Math.round(
+        (currentQuestion / questions.length) * 100
+    );
+
+    document.getElementById("percentage").textContent =
+        `${percent}% COMPLETED`;
+
+    document.getElementById("progress").style.width =
+        percent + "%";
+
+    questionEl.textContent = q.question;
+
+    answersEl.innerHTML = "";
+
+    feedbackEl.style.display = "none";
+
+    nextBtn.style.display = "none";
+
+    q.answers.forEach((answer, index) => {
+
+        const button = document.createElement("button");
+
+        button.className = "answer";
+
+        button.textContent = answer;
+
+        button.onclick = () => selectAnswer(index, button);
+
+        answersEl.appendChild(button);
+
+    });
+
+}
+
+
+function selectAnswer(index, button) {
+
+    if (selectedAnswer !== null) return;
+
+    selectedAnswer = index;
+
+    const q = questions[currentQuestion];
+
+    document.querySelectorAll(".answer").forEach(btn => {
+        btn.disabled = true;
+        btn.style.opacity = "0.65";
+    });
+
+    button.classList.add("selected");
+    button.style.opacity = "1";
+
+    feedbackEl.textContent = q.feedback[index];
+
+    feedbackEl.style.display = "block";
+
+    nextBtn.style.display = "block";
+
+}
+
+
+function nextQuestion() {
+
+    currentQuestion++;
+
+    if (currentQuestion < questions.length) {
+
+        loadQuestion();
+
+    } else {
+
+        showResult();
+
+    }
+
+}
+
+
+function showResult() {
+
+    document.getElementById("quiz").style.display = "none";
+
+    document.getElementById("result").style.display = "block";
+
+    document.getElementById("finalMessage").textContent =
+        "You survived all 8 questions! Honestly, I wasn't sure you would. 😂 Your answers have officially confirmed that you're one of a kind. Never change, Chote Bacheee! ❤️";
+
+}
+
+
+loadQuestion();
+
+</script>
+
+</body>
+</html>

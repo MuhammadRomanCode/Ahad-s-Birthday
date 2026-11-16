@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Happy Birthday!</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            min-height: 100dvh;
+
+            background-color: #10051F;
+
+            background-image: radial-gradient(circle at 50% 45%,
+                    rgba(236, 72, 153, 0.42) 0%,
+                    rgba(190, 24, 170, 0.22) 17%,
+                    rgba(126, 34, 206, 0.12) 35%,
+                    transparent 62%);
+
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+
+            font-family: "Poppins", sans-serif;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            overflow-x: hidden;
+        }
+
+        /* ENVELOPE */
+
+        .cards {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            padding: 15px;
+        }
+
+        .cards img {
+            width: min(85%, 380px);
+            height: auto;
+            object-fit: contain;
+            display: block;
+        }
+
+        #closedEnvelope {
+            cursor: pointer;
+        }
+
+        #openEnvelope {
+            display: none;
+        }
+
+        /* SHADOW OVERLAY */
+
+        .shadow {
+            display: none;
+
+            position: fixed;
+            inset: 0;
+
+            width: 100%;
+            height: 100%;
+            height: 100dvh;
+
+            background: rgba(0, 0, 0, 0.65);
+
+            z-index: 999;
+
+            overflow-y: auto;
+
+            padding: 20px 15px;
+
+            align-items: flex-start;
+            justify-content: center;
+        }
+
+        /* MESSAGE CONTAINER */
+
+        .container {
+            display: block;
+
+            position: relative;
+
+            width: 100%;
+            max-width: 750px;
+
+            min-height: 40px;
+
+            margin: 30px auto;
+
+            padding: 25px;
+
+            background: #1e293b;
+
+            color: white;
+
+            border-radius: 15px;
+
+            box-sizing: border-box;
+
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+
+            overflow: hidden;
+
+            box-shadow: 0 0 30px rgba(236, 72, 153, 0.2);
+
+            transition: height 0.3s ease;
+        }
+
+        /* MESSAGE TEXT */
+
+        .text {
+            font-size: 17px;
+            line-height: 1.8;
+
+            white-space: pre-wrap;
+
+            overflow-wrap: break-word;
+            word-break: normal;
+        }
+
+        /* TABLETS */
+
+        @media screen and (max-width: 768px) {
+
+            .cards img {
+                width: min(85%, 320px);
+            }
+
+            .container {
+                max-width: 95%;
+                padding: 22px;
+                margin: 20px auto;
+            }
+
+            .text {
+                font-size: 15px;
+                line-height: 1.7;
+            }
+        }
+
+        /* MOBILE PHONES */
+
+        @media screen and (max-width: 480px) {
+
+            body {
+                background-attachment: scroll;
+            }
+
+            .cards {
+                padding: 10px;
+            }
+
+            .cards img {
+                width: 90%;
+                max-width: 300px;
+            }
+
+            .shadow {
+                padding: 12px 10px;
+            }
+
+            .container {
+                width: 100%;
+                max-width: 100%;
+
+                padding: 18px 15px;
+
+                margin: 15px auto;
+
+                border-radius: 12px;
+            }
+
+            .text {
+                font-size: 14px;
+                line-height: 1.65;
+            }
+        }
+
+        /* VERY SMALL PHONES */
+
+        @media screen and (max-width: 350px) {
+
+            .cards img {
+                width: 95%;
+            }
+
+            .container {
+                padding: 14px 12px;
+            }
+
+            .text {
+                font-size: 13px;
+                line-height: 1.6;
+            }
+        }
+
+        #nextButton {
+            display: none;
+
+            margin: 25px auto 5px;
+
+            padding: 12px 25px;
+
+            background: linear-gradient(135deg, #ec4899, #9333ea);
+
+            color: white;
+
+            border: none;
+            border-radius: 30px;
+
+            font-size: 15px;
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition: 0.3s ease;
+
+            box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3);
+        }
+
+        #nextButton:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(236, 72, 153, 0.5);
+        }
+
+        #nextButton:active {
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ENVELOPE -->
+
+    <div class="cards">
+
+        <img id="closedEnvelope" src="/Assets/Glossy Pink Kawaii Valentine Envelope.png" alt="Closed Envelope">
+
+        <img id="openEnvelope" src="/Assets/Kawaii Pink Envelope Opening Animation.gif" alt="Opening Envelope">
+
+    </div>
+
+
+    <!-- SHADOW AND MESSAGE -->
+
+    <div class="shadow" id="shadow">
+
+        <div class="container" id="container">
+
+            <div class="text" id="text"></div>
+<button id="nextButton" onclick="goFurther()">
+    <a href="/Pages/Q&A.html">
+        Click to go further →
+    </a>
+    </button>
+        </div>
+
+    </div>
+    
+
+
+    <script>
+
+        const message = `Happiest Birthday, Chote Bacheee! 🎂😭
+
+Well, congratulations on surviving another year of being the most AI-generated human being I've ever encountered. Honestly, sometimes I wonder if you're actually a human or just some ChatGPT beta version that hasn't received the update for facial expressions and hand movements yet. 😭 The way you talk without moving your hands, without changing your expressions, and with that permanently neutral face is genuinely concerning. Like bro, are you having a conversation or processing a software update? At least give us some indication that you're alive. A little hand movement won't cost you extra RAM, I promise.
+
+And let's talk about that face. You could literally be telling the most exciting story in the world, and your expression would still look like someone just told you to wait 5–7 business days. I genuinely cannot tell whether you're happy, sad, confused, or mentally calculating the meaning of life. Your face has fewer updates than Internet Explorer. 😂 But I'll give you one thing: that smile of yours is actually pretty cute. Unfortunately, it appears so rarely that whenever it does, it feels like witnessing a once-in-a-lifetime astronomical event. Please don't overuse it, though. We wouldn't want to crash the system.
+
+Also, I haven't forgotten your legendary statement about me being your favourite personality. HAHAHA. I mean, obviously, you have excellent taste, so I can't really blame you. But the fact that you said it once and gave me enough material to tease you for the rest of your natural life is honestly one of my favourite things. Don't worry, Chote Bache, I'll make sure you never forget that confession. Consider it permanently saved in my memory. No deleting, no editing, no taking it back. 😂
+
+On a serious note (yes, I'm capable of being serious too, unlike your permanently emotionless AI existence), I hope you have an amazing birthday and an even better year ahead. I hope you get everything you're wishing for, achieve all the things you're working towards, and find plenty of reasons to smile. And maybe, just maybe, this year you'll finally unlock some new facial expressions and learn how to use your hands while talking. We have high hopes for your software development.
+
+Anyway, stay the same weird, emotionless, suspiciously robotic person you are. You're genuinely a fun person to have around, even if talking to you sometimes feels like interacting with a very polite customer service chatbot. 😂 Don't let the teasing get to you; it's all part of the package.
+
+Happy Birthday once again, Chote Bache! Have the best day, enjoy yourself, and please remember to smile. Not that fake system-generated smile, the cute one. And don't forget, your favourite personality wishes you a very happy birthday. Honestly, that's probably the best birthday gift you'll receive. You're welcome. 😌❤️`;
+
+
+        const closedEnvelope = document.getElementById("closedEnvelope");
+        const openEnvelope = document.getElementById("openEnvelope");
+
+        const shadow = document.getElementById("shadow");
+        const container = document.getElementById("container");
+        const text = document.getElementById("text");
+
+        let index = 0;
+        let animationStarted = false;
+
+
+        // ENVELOPE CLICK
+
+        closedEnvelope.addEventListener("click", function () {
+
+            if (animationStarted) return;
+
+            animationStarted = true;
+
+            closedEnvelope.style.display = "none";
+
+            openEnvelope.style.display = "block";
+
+
+            // Wait for envelope animation
+
+            setTimeout(() => {
+
+                openEnvelope.style.display = "none";
+
+                shadow.style.display = "flex";
+
+                container.style.display = "block";
+
+                typeWriter();
+
+            }, 2000);
+
+        });
+
+
+        // TYPEWRITER ANIMATION
+
+        function typeWriter() {
+
+            if (index < message.length) {
+
+                const currentHeight = container.offsetHeight;
+
+                text.textContent += message[index];
+
+                index++;
+
+                const newHeight = container.scrollHeight;
+
+                container.style.height = currentHeight + "px";
+
+                requestAnimationFrame(() => {
+
+                    container.style.height = newHeight + "px";
+
+                });
+
+                setTimeout(typeWriter, 40);
+
+            } else {
+
+                container.style.height = "auto";
+
+                // Show button after typing finishes
+                const nextButton = document.getElementById("nextButton");
+
+                nextButton.style.display = "block";
+
+            }
+
+            function goFurther() {
+                window.location.href = "surprise.html";
+            }
+
+        }
+
+    </script>
+
+</body>
+
+</html>
